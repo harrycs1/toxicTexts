@@ -4,7 +4,7 @@ import * as toxicity from '@tensorflow-models/toxicity';
 export function getToxicity (sentences) {
   return new Promise((resolve, reject) => {
     // The minimum prediction confidence.
-    const threshold = 0.9;
+    const threshold = 0.99;
 
     // Load the model. Users optionally pass in a threshold and an array of
     // labels to include.
@@ -60,4 +60,4 @@ export function getToxicity (sentences) {
   })
 }
 
-getToxicity(data)
+// getToxicity(data)

@@ -1,10 +1,11 @@
 import { getToxicity } from "../../api"
 
-export const FileUploader = ({setFiles, setIsLoading, setResults}) => {
+export const FileUploader = ({setFiles, setIsLoading, setLoadingMessage, setResults}) => {
 
     function handleUploadFile(event) {
         event.preventDefault()
         setIsLoading(true)
+        setLoadingMessage('Uploading file...')
         setResults('')
 
         const reader = new FileReader()
