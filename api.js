@@ -1,33 +1,10 @@
 // import * as tf from '@tensorflow/tfjs-node';
 import * as toxicity from '@tensorflow-models/toxicity';
-import * as fs from 'node:fs'
 
-// const data = fs.readFileSync('./data/toxicConversation.txt', 'utf8')
-
-export function getToxicity (data) {
+export function getToxicity (sentences) {
   return new Promise((resolve, reject) => {
     // The minimum prediction confidence.
     const threshold = 0.9;
-
-    let sentences = []
-    let cleanedData = []
-
-    try {
-      // const data = fs.readFileSync('./data/toxicConversation.txt', 'utf8')
-
-      let lines = data.split('\n')
-      for (const line of lines) {
-        let date = line.split(',')[0].slice(1)
-        let time = line.slice(13).split(']')[0]
-        let name = line.slice(23).split(':')[0]
-        let message = line.slice(25 + name.length)
-
-        cleanedData.push([date, time, name, message])
-        sentences.push(message)
-      }
-    } catch (error) {
-      console.log(error)
-    }
 
     // Load the model. Users optionally pass in a threshold and an array of
     // labels to include.
@@ -71,10 +48,16 @@ export function getToxicity (data) {
           results[label] = combinedProbability.toFixed(2)
         })
 
+        let maxToxicity = Math.max(...predictions[6].results.map((result) => {
+          return result.probabilities[1]
+        }))
+
+        results['max'] = maxToxicity
+        // console.log(results)
         resolve(results)
       });
     });
   })
 }
 
-// getToxicity(data)
+getToxicity(data)
